@@ -18,7 +18,11 @@ void executeProgram( const std::string & program_name )
   {
     perror("ptrace error: ");
   }
-  execl( program_name.c_str(), program_name.c_str(), nullptr );
+  int ret = execl( program_name.c_str(), program_name.c_str(), nullptr );
+  if( ret < 0 )
+  {
+    perror( "executeProgram execl failed: ");
+  }
 }
 
 int main(int argc, const char * argv[])
