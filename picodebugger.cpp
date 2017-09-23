@@ -8,7 +8,7 @@
 #include "picodebugger.hpp"
 #include "breakpoint.hpp"
 #include "registers.hpp"
-#include "linenoise.h"
+#include "third_party/linenoise.h"
 #include "utils.hpp"
 
 #include <sys/wait.h>
