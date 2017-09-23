@@ -6,6 +6,7 @@
 //  Copyright © 2017 Trevor Bakker. All rights reserved.
 //
 #include "picodebugger.hpp"
+#include "breakpoint.hpp"
 #include "linenoise.h"
 #include "utils.hpp"
 
@@ -13,6 +14,18 @@
 #include <sys/ptrace.h>
 #include <string>
 #include <iostream>
+
+using namespace picodbg;
+
+void picodebugger::setBreakpointAtAddress( std::intptr_t addr )
+{
+  std::cout << "Setting breakpoint at addres 0x" << std::hex 
+            << addr << std::endl;
+
+  breakpoint bp { m_pid, addr };
+  bp.enable();
+  m_breakpoints[addr] = bp;
+}
 
 void picodebugger::run()
 {
@@ -38,6 +51,11 @@ void picodebugger::handleCommand( const std::string &line )
   if( isPrefix( command, "cont" ) )
   {
     continueExecution();
+  }
+  else if( isPrefix( command, "break" ) )
+  {
+    std::string addr {args[1], 2}; 
+    setBreakpointAtAddress( std::stol(addr, 0, 16) );
   }
   else
   {

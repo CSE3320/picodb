@@ -11,6 +11,7 @@
 #include <sys/ptrace.h>
 #include "picodebugger.hpp"
 
+using namespace picodbg;
 
 void executeProgram( const std::string & program_name )
 {
