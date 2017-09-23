@@ -31,6 +31,8 @@ namespace picodbg
     void handleCommand( const std::string &line );
   
     void setBreakpointAtAddress( std::intptr_t addr );
+ 
+    void dumpRegisters();
     
   private:
     std::string m_program_name;

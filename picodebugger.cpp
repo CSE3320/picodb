@@ -7,6 +7,7 @@
 //
 #include "picodebugger.hpp"
 #include "breakpoint.hpp"
+#include "registers.hpp"
 #include "linenoise.h"
 #include "utils.hpp"
 
@@ -14,6 +15,7 @@
 #include <sys/ptrace.h>
 #include <string>
 #include <iostream>
+#include <iomanip>
 
 using namespace picodbg;
 
@@ -57,6 +59,22 @@ void picodebugger::handleCommand( const std::string &line )
     std::string addr {args[1], 2}; 
     setBreakpointAtAddress( std::stol(addr, 0, 16) );
   }
+  else if (isPrefix( command, "register" ) ) 
+  {
+    if (isPrefix(args[1], "dump")) 
+    {
+      dumpRegisters();
+    }
+    else if (isPrefix(args[1], "read")) 
+    {
+      std::cout << getRegisterValue(m_pid, getRegisterFromName(args[2])) << std::endl;
+    }
+    else if (isPrefix(args[1], "write")) 
+    {
+      std::string val {args[3], 2}; 
+      setRegisterValue( m_pid, getRegisterFromName( args[2] ), std::stol( val, 0, 16 ) );
+    }
+  }
   else
   {
     std::cout << "Command not found" << std::endl;
@@ -72,3 +90,12 @@ void picodebugger::continueExecution()
   waitpid( m_pid, &status, options );
 }
 
+void picodebugger::dumpRegisters() 
+{
+  for (const auto& rd : g_register_descriptors) 
+  {
+    std::cout << rd.name << " 0x"
+              << std::setfill('0') << std::setw(16) 
+              << std::hex << getRegisterValue(m_pid, rd.r) << std::endl;
+  }
+}
