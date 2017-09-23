@@ -32,8 +32,20 @@ namespace picodbg
   
     void setBreakpointAtAddress( std::intptr_t addr );
  
-    void dumpRegisters();
-    
+    void dumpRegisters( );
+
+    void writeMemory(uint64_t, uint64_t);
+
+    uint64_t readMemory( uint64_t address );
+  
+    uint64_t getProgramCounter( );
+
+    void setProgramCounter( uint64_t );
+
+    void stepOverBreakpoint( );
+
+    void waitForSignal( );
+  
   private:
     std::string m_program_name;
     pid_t m_pid;

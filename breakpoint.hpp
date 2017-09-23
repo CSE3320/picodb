@@ -20,8 +20,8 @@ namespace picodbg
       void enable();
       void disable();
   
-      auto is_enabled()  const -> bool { return m_enabled; }
-      auto get_address() const -> std::intptr_t{ return m_addr; }
+      auto isEnabled()  const -> bool { return m_enabled; }
+      auto getAddress() const -> std::intptr_t{ return m_addr; }
   
     private:
       pid_t m_pid;
